@@ -1,1 +1,1 @@
-Pasta contendo o diagrama do projeto
+Pasta contendo o diagrama do projeto.
