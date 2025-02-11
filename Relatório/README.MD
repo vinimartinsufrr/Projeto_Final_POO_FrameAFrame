@@ -1,1 +1,1 @@
-Contem o relatorio com objetivo e funcionalidades do projeto
+Contém o relatório com objetivos e funcionalidades do projeto
