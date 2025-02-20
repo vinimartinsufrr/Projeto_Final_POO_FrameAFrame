@@ -47,13 +47,30 @@ Antes de executar o sistema, certifique-se de ter o Python instalado em seu comp
 1. **Clone o repositório**  
    Abra o terminal (ou prompt de comando) e execute:
  ```sh
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
-python -m venv venv  # (Opcional, mas recomendado)
-venv\Scripts\activate  # No Windows
-source venv/bin/activate  # No Linux/macOS
-pip install -r requirements.txt
+git clone https://github.com/vinimartinsufrr/Projeto_Final_POO_FrameAFrame
+cd Projeto_Final_POO_FrameAFrame
  ```
+2. **Crie um ambiente virtual na IDE (Opcional)**  
+ ```sh
+python -m venv venv
+ ```
+   No Windows:
+ ```sh
+venv\Scripts\activate
+ ```
+   No Linux:
+```sh
+source venv/bin/activate
+```
+3. ** Instale o requerido para rodar o projeto **
+```sh
+pip install -r requirements.txt
+```
+**  🚀 Execução ** 
+```sh
+streamlit run main.py
+```
+
 ## ✨ Contribuição
 Se você deseja contribuir para este projeto, fique à vontade para enviar **pull requests** ou abrir **issues** relatando bugs ou sugerindo melhorias.
 
