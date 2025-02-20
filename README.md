@@ -38,7 +38,7 @@ Bem-vindo ao nosso **Sistema de Locadora de Vídeos**! Este projeto foi desenvol
 
 ## ✨ Como Executar o Projeto
 
-** 📌 Pré-requisitos ** 
+### 📌 Pré-requisitos
 
 Antes de executar o sistema, certifique-se de ter o Python instalado em seu computador. Recomenda-se utilizar um ambiente virtual para evitar conflitos entre bibliotecas.
 
