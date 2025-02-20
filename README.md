@@ -37,8 +37,23 @@ Bem-vindo ao nosso **Sistema de Locadora de Vídeos**! Este projeto foi desenvol
 - **Banco de Dados:** SQLite (ou outra opção a ser definida)
 
 ## ✨ Como Executar o Projeto
-1. Em Progresso!
-   
+
+** 📌 Pré-requisitos ** 
+
+Antes de executar o sistema, certifique-se de ter o Python instalado em seu computador. Recomenda-se utilizar um ambiente virtual para evitar conflitos entre bibliotecas.
+
+**  🔧 Instalação ** 
+
+1. **Clone o repositório**  
+   Abra o terminal (ou prompt de comando) e execute:
+ ```sh
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+python -m venv venv  # (Opcional, mas recomendado)
+venv\Scripts\activate  # No Windows
+source venv/bin/activate  # No Linux/macOS
+pip install -r requirements.txt
+ ```
 ## ✨ Contribuição
 Se você deseja contribuir para este projeto, fique à vontade para enviar **pull requests** ou abrir **issues** relatando bugs ou sugerindo melhorias.
 
