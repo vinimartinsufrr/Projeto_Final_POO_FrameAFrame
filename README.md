@@ -42,7 +42,7 @@ Bem-vindo ao nosso **Sistema de Locadora de Vídeos**! Este projeto foi desenvol
 
 Antes de executar o sistema, certifique-se de ter o Python instalado em seu computador. Recomenda-se utilizar um ambiente virtual para evitar conflitos entre bibliotecas.
 
-**  🔧 Instalação ** 
+### 🔧 Instalação  
 
 1. **Clone o repositório**  
    Abra o terminal (ou prompt de comando) e execute:
@@ -62,11 +62,11 @@ venv\Scripts\activate
 ```sh
 source venv/bin/activate
 ```
-3. ** Instale o requerido para rodar o projeto **
+3. **Instale o requerido para rodar o projeto**
 ```sh
 pip install -r requirements.txt
 ```
-**  🚀 Execução ** 
+### 🚀 Execução  
 ```sh
 streamlit run main.py
 ```
