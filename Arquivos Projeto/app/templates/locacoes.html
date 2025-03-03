@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Alugar um Filme{% endblock %}
+
+{% block content %}
+<div class="flex">
+    <!-- Barra Lateral -->
+    <div class="w-1/4 bg-gray-800 p-6 rounded-lg shadow-lg h-auto text-center">
+        <div class="w-24 h-24 bg-gray-600 rounded-full mx-auto"></div>
+        <h2 class="text-xl font-semibold text-white mt-3">{{ current_user.nome }}</h2>
+        <div class="mt-6 space-y-4">
+            <a href="{{ url_for('explorar.explorar_filmes') }}"
+                class="block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Voltar para Inicio
+            </a>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="w-3/4 p-6">
+        <h1 class="text-3xl font-bold text-blue-500">Escolha o que você deseja alugar:</h1>
+
+        <form method="POST" class="mt-6 bg-gray-800 p-6 rounded-lg shadow-lg space-y-4"
+            onsubmit="return validarFormulario()">
+            <div>
+                <label for="filmes" class="block text-sm font-medium text-white">Escolha os filmes</label>
+                <select name="filmes" id="filmes" multiple
+                    class="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
+                    {% for filme in filmes %}
+                    <option value="{{ filme.id }}">{{ filme.titulo }} - R$ {{ filme.preco }} / dia</option>
+                    {% endfor %}
+                </select>
+                <p id="erro-filmes" class="text-red-500 text-sm mt-1 hidden">Selecione pelo menos um filme.</p>
+            </div>
+
+            <div>
+                <label for="data_retirada" class="block text-sm font-medium text-white">Data de Retirada</label>
+                <input type="date" name="data_retirada" id="data_retirada"
+                    class="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                    required>
+                <p id="erro-data" class="text-red-500 text-sm mt-1 hidden">Escolha uma data de retirada válida.</p>
+            </div>
+
+            <div>
+                <label for="dias_locacao" class="block text-sm font-medium text-white">Quantidade de Dias de
+                    Locação</label>
+                <input type="number" name="dias_locacao" id="dias_locacao" placeholder="Quantidade de dias"
+                    class="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                    required>
+                <p id="erro-dias" class="text-red-500 text-sm mt-1 hidden">Informe a quantidade de dias.</p>
+            </div>
+
+            <div>
+                <label for="forma_pagamento" class="block text-sm font-medium text-white">Forma de Pagamento</label>
+                <select name="forma_pagamento" id="forma_pagamento"
+                    class="p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black">
+                    <option value="">Selecione uma opção</option>
+                    <option value="dinheiro">Dinheiro</option>
+                    <option value="cartao">Cartão</option>
+                </select>
+                <p id="erro-pagamento" class="text-red-500 text-sm mt-1 hidden">Escolha uma forma de pagamento.</p>
+            </div>
+
+            <div>
+                <p class="text-white text-sm mt-2">Preço Total: R$ <span id="preco_total">0.00</span></p>
+                <p class="text-white text-sm">Data de Devolução Prevista: <span id="data_devolucao"></span></p>
+            </div>
+
+            <button type="submit"
+                class="bg-blue-500 text-white p-3 rounded-md w-full mt-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Confirmar Locação
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Scripts de Validação -->
+<script>
+    function calcularPreco() {
+        let total = 0;
+        const filmesSelecionados = document.getElementById('filmes').selectedOptions;
+        for (let i = 0; i < filmesSelecionados.length; i++) {
+            let precoUnitario = parseFloat(filmesSelecionados[i].text.split(' - ')[1].replace('R$', '').trim());
+            let diasLocacao = parseInt(document.getElementById('dias_locacao').value);
+            if (!isNaN(precoUnitario) && !isNaN(diasLocacao)) {
+                total += precoUnitario * diasLocacao;
+            }
+        }
+        document.getElementById('preco_total').innerText = total.toFixed(2);
+    }
+
+    function calcularDataDevolucao() {
+        let dataRetirada = new Date(document.getElementById('data_retirada').value);
+        if (dataRetirada) {
+            let dias = parseInt(document.getElementById('dias_locacao').value);
+            if (!isNaN(dias)) {
+                dataRetirada.setDate(dataRetirada.getDate() + dias);
+                if (dataRetirada.getDay() == 6) dataRetirada.setDate(dataRetirada.getDate() + 2);
+                if (dataRetirada.getDay() == 0) dataRetirada.setDate(dataRetirada.getDate() + 1);
+                document.getElementById('data_devolucao').innerText = dataRetirada.toLocaleDateString();
+            }
+        }
+    }
+
+    function validarFormulario() {
+        let valido = true;
+
+        // Valida Filmes
+        const filmesSelecionados = document.getElementById('filmes').selectedOptions;
+        if (filmesSelecionados.length === 0) {
+            document.getElementById('erro-filmes').classList.remove('hidden');
+            valido = false;
+        } else {
+            document.getElementById('erro-filmes').classList.add('hidden');
+        }
+
+        // Valida Data de Retirada
+        const dataRetirada = document.getElementById('data_retirada').value;
+        if (!dataRetirada) {
+            document.getElementById('erro-data').classList.remove('hidden');
+            valido = false;
+        } else {
+            document.getElementById('erro-data').classList.add('hidden');
+        }
+
+        // Valida Dias de Locação
+        const diasLocacao = document.getElementById('dias_locacao').value;
+        if (!diasLocacao || diasLocacao <= 0) {
+            document.getElementById('erro-dias').classList.remove('hidden');
+            valido = false;
+        } else {
+            document.getElementById('erro-dias').classList.add('hidden');
+        }
+
+        // Valida Forma de Pagamento
+        const formaPagamento = document.getElementById('forma_pagamento').value;
+        if (!formaPagamento) {
+            document.getElementById('erro-pagamento').classList.remove('hidden');
+            valido = false;
+        } else {
+            document.getElementById('erro-pagamento').classList.add('hidden');
+        }
+
+        // Se válido, exibe pop-up de sucesso
+        if (valido) {
+            alert("Filme alugado com sucesso! 🎬");
+        } else {
+            alert("Preencha todos os campos corretamente antes de confirmar.");
+        }
+
+        return valido;
+    }
+
+    document.getElementById('dias_locacao').addEventListener('input', function () {
+        calcularPreco();
+        calcularDataDevolucao();
+    });
+
+    document.getElementById('data_retirada').addEventListener('change', function () {
+        calcularPreco();
+        calcularDataDevolucao();
+    });
+</script>
+
+{% endblock %}

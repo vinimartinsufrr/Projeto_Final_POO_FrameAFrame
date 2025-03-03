@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Explorar Filmes{% endblock %}
+
+{% block content %}
+<div class="flex min-h-screen">
+
+    <!-- 🔹 Central de Navegação Fixa -->
+    <aside class="w-64 bg-gray-800 text-white p-6 rounded-lg shadow-lg h-screen flex flex-col">
+        <!-- 🔹 Imagem do Usuário -->
+        <div class="flex justify-center">
+            <div class="w-20 h-20 bg-gray-600 rounded-full"></div>
+        </div>
+
+        <!-- 🔹 Nome do Usuário -->
+        <h2 class="text-center text-xl font-bold mt-4">{{ current_user.nome }}</h2>
+
+        <!-- 🔹 Opções de Navegação -->
+        <nav class="mt-6 flex-grow">
+            <ul class="space-y-4">
+                <li>
+                    <a href="{{ url_for('explorar.explorar_filmes') }}"
+                        class="block p-2 bg-gray-700 rounded-md text-center hover:bg-gray-600">
+                        Início
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('locacoes.listar_locacoes') }}"
+                        class="block p-2 bg-gray-700 rounded-md text-center hover:bg-gray-600">
+                        Alugar Filme
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('meus_dados.visualizar_dados') }}"
+                        class="block p-2 bg-gray-700 rounded-md text-center hover:bg-gray-600">
+                        Meus Dados
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('minhas_locacoes.visualizar_locações') }}"
+                        class="block p-2 bg-gray-700 rounded-md text-center hover:bg-gray-600">
+                        Minhas Locações
+                    </a>
+                </li>
+                {% if current_user.is_admin %}
+                <li>
+                    <a href="{{ url_for('filmes.listar_filmes') }}"
+                        class="block p-2 bg-gray-700 rounded-md text-center hover:bg-gray-600">
+                        Cadastrar Filmes
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('relatorios.hub') }}"
+                        class="block p-2 bg-gray-700 rounded-md text-center hover:bg-gray-600">
+                        Gerenciamento
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <!-- 🔹 Botão de Logout (ajustado para margem) -->
+        <form method="POST" action="{{ url_for('auth.logout') }}" class="mt-6">
+            <button type="submit" class="w-full bg-red-500 text-white p-3 rounded-md hover:bg-red-700">
+                Sair
+            </button>
+        </form>
+    </aside>
+
+    <!-- 🔹 Área de Exibição dos Filmes -->
+    <div class="flex-1 p-10">
+        <h1 class="text-3xl font-bold text-blue-500">Filmes Disponíveis</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+            {% for filme in filmes %}
+            <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                <img src="{{ filme.imagem_url }}" alt="{{ filme.titulo }}" class="w-full h-60 object-cover rounded-lg">
+                <h2 class="text-xl font-semibold text-white mt-2">{{ filme.titulo }} ({{ filme.ano }})</h2>
+                <p class="text-gray-300 text-sm mt-1">{{ filme.genero }} - Dirigido por {{ filme.diretor }}</p>
+                <p class="text-gray-400 mt-2">{{ filme.descricao }}</p>
+                <div class="mt-2 flex items-center justify-between">
+                    <!-- Preço diário de locação formatado -->
+                    <p class="text-green-400 font-bold">Preço/Dia: R$ {{ '%.2f' % filme.preco }}</p>
+                </div>
+                <p class="text-gray-400 text-sm mt-2">ID do Filme: {{ filme.id }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

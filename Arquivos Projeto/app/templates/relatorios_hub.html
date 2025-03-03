@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciamento{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen">
+    <!-- 🔹 Card Central -->
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-96 text-center">
+        <h1 class="text-3xl font-bold text-blue-500 mb-6">Gerenciamento</h1>
+
+        <!-- 🔹 Opções de Gerenciamento -->
+        <div class="space-y-4">
+            <a href="{{ url_for('relatorios.listar_clientes') }}"
+                class="block bg-gray-700 p-4 rounded-md text-white hover:bg-gray-600">
+                Clientes Registrados
+            </a>
+
+            <a href="{{ url_for('relatorios.listar_locacoes') }}"
+                class="block bg-gray-700 p-4 rounded-md text-white hover:bg-gray-600">
+                Locações Realizadas
+            </a>
+
+            <a href="{{ url_for('relatorios_estoque.listar_estoque') }}"
+                class="block bg-gray-700 p-4 rounded-md text-white hover:bg-gray-600">
+                Estoque
+            </a>
+        </div>
+
+        <!-- 🔹 Botão de Voltar -->
+        <a href="{{ url_for('home.index') }}"
+            class="mt-6 block bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600">
+            Voltar ao Início
+        </a>
+    </div>
+</div>
+{% endblock %}
