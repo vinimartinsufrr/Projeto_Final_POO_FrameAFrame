@@ -28,13 +28,12 @@ Bem-vindo ao nosso **Sistema de Locadora de Vídeos**! Este projeto foi desenvol
 ## 📜 Regras de Negócio
 - **Cadastro de Clientes**: Cada cliente deve ter um CPF único. Não é possível alugar sem cadastro.
 - **Cadastro de Filmes**: O título do filme deve ser único e o estoque deve ser controlado.
-- **Locação de Filmes**: Um cliente pode alugar até 5 filmes simultaneamente. O valor do aluguel é cobrado por dia.
-- **Devolução e Multas**: Multa diária de R$ 1,00 por atraso. Após a devolução, o filme volta ao estoque.
+- **Locação de Filmes**: Um cliente pode alugar até mais de um filme simultaneamente. O valor do aluguel é cobrado por dia.
 
 ## 🎨 Tecnologias Utilizadas
 - **Linguagem:** Python 
-- **Framework para Interface:** Streamlit
-- **Banco de Dados:** SQLite (ou outra opção a ser definida)
+- **Framework para Interface:** Tailwind
+- **Banco de Dados:** SQLite 
 
 ## ✨ Como Executar o Projeto
 
@@ -68,7 +67,8 @@ pip install -r requirements.txt
 ```
 ### 🚀 Execução  
 ```sh
-streamlit run main.py
+python setup_admin.py
+python main.py
 ```
 
 ## ✨ Contribuição
