@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Detalhes do Filme{% endblock %}
+
+{% block content %}
+<div class="flex">
+
+    <!-- Barra Lateral -->
+    <div class="w-1/4 bg-gray-800 p-6 rounded-lg shadow-lg h-auto text-center">
+        <div class="w-24 h-24 bg-gray-600 rounded-full mx-auto"></div>
+        <h2 class="text-xl font-semibold text-white mt-3">{{ current_user.nome }}</h2>
+        <div class="mt-6 space-y-4">
+            <!-- Botão de Aluguel -->
+            <a href="{{ url_for('locacoes.listar_locacoes') }}" 
+               class="block bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                Alugue Agora
+            </a>
+            <!-- Botão de Voltar para Explorar -->
+            <a href="{{ url_for('explorar.explorar_filmes') }}"
+               class="block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Voltar para Explorar
+            </a>
+        </div>
+    </div>
+
+    <!-- Área Principal -->
+    <div class="w-3/4 p-6">
+        <h1 class="text-3xl font-bold text-blue-500">{{ filme.titulo }} ({{ filme.ano }})</h1>
+
+        <!-- Detalhes do Filme -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mt-6">
+            <img src="{{ filme.imagem_url }}" alt="{{ filme.titulo }}" class="w-full h-60 object-cover rounded-lg">
+            <p class="text-gray-300 mt-4">{{ filme.descricao }}</p>
+            <p class="text-gray-300 mt-4">Gênero: {{ filme.genero }}</p>
+            <p class="text-gray-300 mt-4">Preço/Dia: R$ {{ '%.2f' % filme.preco }}</p>
+            <p class="text-gray-300 mt-4">Diretor: {{ filme.diretor }}</p>
+        </div>
+
+        <!-- Formulário de Avaliação -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mt-6">
+            <h2 class="text-xl font-semibold text-white">Deixe sua Avaliação</h2>
+            <form method="POST">
+                <div class="mt-4">
+                    <label for="nota" class="block text-sm font-medium text-white">Nota (0 a 5)</label>
+                    <input type="number" name="nota" id="nota" min="0" max="5" required
+                        class="w-full p-3 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div class="mt-4">
+                    <label for="descricao" class="block text-sm font-medium text-white">Descrição</label>
+                    <textarea name="descricao" id="descricao" required
+                        class="w-full p-3 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-md mt-4 hover:bg-blue-600">
+                    Enviar Avaliação
+                </button>
+            </form>
+        </div>
+
+        <!-- Exibição das Avaliações -->
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg mt-6">
+            <h2 class="text-xl font-semibold text-white">Avaliações</h2>
+
+            {% if avaliacoes %}
+                {% for avaliacao in avaliacoes %}
+                    <div class="mt-4 bg-gray-700 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-600 rounded-full"></div> <!-- Foto do usuário -->
+                            <p class="ml-4 text-white">{{ avaliacao.usuario.nome }} <span class="text-yellow-400">Avaliou :
+                                {{ avaliacao.nota }} de 5.0</span></p>
+                        </div>
+                        <p class="mt-2 text-gray-300">{{ avaliacao.descricao }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-white">Ainda não há avaliações para este filme.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

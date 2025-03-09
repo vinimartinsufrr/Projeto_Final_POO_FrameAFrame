@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Filmes{% endblock %}
+
+{% block content %}
+<div class="w-full p-6">
+    <h1 class="text-3xl font-bold text-blue-500 mb-6">Gerenciar Filmes</h1>
+
+    <!-- Botão para voltar ao explorar -->
+    <a href="{{ url_for('relatorios.hub') }}" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-lg mb-6 hover:bg-blue-600 transition">
+        Voltar para Gerenciamento
+    </a>
+
+    <!-- Lista de Filmes -->
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold text-white mb-4">Filmes Cadastrados</h2>
+        <table class="w-full text-white">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 text-left">Título</th>
+                    <th class="px-4 py-2 text-left">Quantidade Disponível</th>
+                    <th class="px-4 py-2 text-left">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for filme in filmes %}
+                <tr>
+                    <td class="px-4 py-2">{{ filme.titulo }}</td>
+                    <td class="px-4 py-2">{{ filme.quantidade_disponivel }}</td>
+                    <td class="px-4 py-2">
+                        <!-- Formulário para adicionar exemplares -->
+                        <form method="POST" class="inline-block space-x-2" onsubmit="return showAddConfirmationPopup();">
+                            <input type="hidden" name="filme_id" value="{{ filme.id }}">
+                            <input type="number" name="quantidade" placeholder="Número a adicionar" min="1" class="p-2 rounded-md text-black">
+                            <button type="submit" name="adicionar_exemplares" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
+                                Adicionar Exemplares
+                            </button>
+                        </form>
+                        <!-- Formulário para remover o filme -->
+                        <form method="POST" class="inline-block ml-2" onsubmit="return confirmDelete();">
+                            <input type="hidden" name="filme_id" value="{{ filme.id }}">
+                            <button type="submit" name="remover_filme" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                                Apagar Filme
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Script para confirmar a remoção e exibir o pop-up de adição -->
+<script>
+    // Confirmar a exclusão do filme
+    function confirmDelete() {
+        return confirm("Tem certeza de que deseja remover este filme? Esta ação não pode ser desfeita.");
+    }
+
+    // Mostrar pop-up de confirmação de adição de exemplares
+    function showAddConfirmationPopup() {
+        // Confirmar antes de enviar o formulário
+        const isConfirmed = confirm("Tem certeza de que deseja incrementar o estoque deste filme?");
+        return isConfirmed;  // Impede o envio do formulário se o usuário não confirmar
+    }
+
+    // Fechar o pop-up de confirmação de adição de exemplares
+    function closeAddConfirmationPopup() {
+        document.getElementById('addConfirmationPopup').classList.add('hidden');
+    }
+</script>
+
+{% endblock %}

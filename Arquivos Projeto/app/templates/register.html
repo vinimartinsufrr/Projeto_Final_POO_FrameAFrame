@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center min-h-screen">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-3xl font-bold text-blue-500 text-center">Criar Conta</h1>
+
+        <!-- 🔹 Exibir mensagens flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div id="flash-messages" class="mt-4">
+            {% for category, message in messages %}
+            <div
+                class="p-3 mb-2 rounded-md text-white {% if category == 'danger' %} bg-red-600 {% elif category == 'success' %} bg-green-600 {% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="mt-6 space-y-4" id="registerForm">
+            <div>
+                <label for="nome" class="block text-sm font-medium text-white">Nome</label>
+                <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required
+                    class="p-3 w-full border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500">
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-white">Email</label>
+                <input type="email" name="email" id="email" placeholder="Digite seu email" required
+                    class="p-3 w-full border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500">
+            </div>
+
+            <div>
+                <label for="cpf" class="block text-sm font-medium text-white">CPF</label>
+                <input type="text" name="cpf" id="cpf" placeholder="Apenas números (11 dígitos)" required
+                    class="p-3 w-full border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500">
+            </div>
+
+            <div>
+                <label for="telefone" class="block text-sm font-medium text-white">Telefone</label>
+                <input type="text" name="telefone" id="telefone" placeholder="DDD + número (11 dígitos)" required
+                    class="p-3 w-full border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500">
+            </div>
+
+            <div>
+                <label for="senha" class="block text-sm font-medium text-white">Senha</label>
+                <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required
+                    class="p-3 w-full border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500">
+            </div>
+
+            <button type="submit"
+                class="bg-blue-500 text-white p-3 rounded-md w-full mt-4 hover:bg-blue-600 transition">
+                Cadastrar
+            </button>
+        </form>
+
+        <p class="mt-4 text-center text-gray-300">Já tem uma conta?
+            <a href="{{ url_for('auth.login') }}" class="text-blue-400 hover:underline">Faça login</a>
+        </p>
+    </div>
+</div>
+
+<!-- 🔹 Script para pop-ups e ocultação automática de mensagens -->
+<script>
+    document.getElementById("registerForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        let nome = document.getElementById("nome").value;
+        let email = document.getElementById("email").value;
+        let cpf = document.getElementById("cpf").value;
+        let telefone = document.getElementById("telefone").value;
+        let senha = document.getElementById("senha").value;
+
+        if (nome.length < 4) {
+            alert("O nome deve ter pelo menos 4 caracteres.");
+            return;
+        }
+        if (!/^\d{11}$/.test(cpf)) {
+            alert("CPF inválido! Deve conter exatamente 11 números.");
+            return;
+        }
+        if (!/^\d{11}$/.test(telefone)) {
+            alert("Telefone inválido! Deve conter exatamente 11 números.");
+            return;
+        }
+        if (!email.endsWith(".com")) {
+            alert("E-mail inválido! O endereço deve terminar com '.com'.");
+            return;
+        }
+        if (senha.length < 4) {
+            alert("A senha deve ter pelo menos 4 caracteres.");
+            return;
+        }
+
+        alert("Cadastro realizado com sucesso!");
+        event.target.submit();
+    });
+
+    // 🔹 Ocultar mensagens flash automaticamente após 3 segundos
+    setTimeout(() => {
+        let flashMessages = document.getElementById("flash-messages");
+        if (flashMessages) {
+            flashMessages.style.display = "none";
+        }
+    }, 3000);
+</script>
+
+{% endblock %}

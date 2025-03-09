@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Dados{% endblock %}
+
+{% block content %}
+<div class="flex">
+    <!-- Barra Lateral -->
+    <div class="w-1/4 bg-gray-800 p-6 rounded-lg shadow-lg h-auto text-center">
+        <div class="w-24 h-24 bg-gray-600 rounded-full mx-auto"></div>
+        <h2 class="text-xl font-semibold text-white mt-3">{{ current_user.nome }}</h2>
+        <div class="mt-6 space-y-4">
+            <a href="{{ url_for('explorar.explorar_filmes') }}"
+                class="block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Voltar para Explorar
+            </a>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <div class="w-3/4 p-6">
+        <h1 class="text-3xl font-bold text-blue-500">Meus Dados</h1>
+
+        <div class="mt-6 bg-gray-800 p-6 rounded-lg shadow-lg">
+            <p class="text-gray-300"><strong>Nome:</strong> {{ current_user.nome }}</p>
+            <p class="text-gray-300"><strong>Email:</strong> {{ current_user.email }}</p>
+            <p class="text-gray-300"><strong>CPF:</strong> {{ current_user.cliente.cpf }}</p>
+            <p class="text-gray-300"><strong>Telefone:</strong> {{ current_user.cliente.telefone }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
