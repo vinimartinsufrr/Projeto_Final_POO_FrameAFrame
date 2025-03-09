@@ -32,7 +32,7 @@ Bem-vindo ao nosso **Sistema de Locadora de Vídeos**! Este projeto foi desenvol
 
 ## 🎨 Tecnologias Utilizadas
 - **Linguagem:** Python 
-- **Framework para Interface:** Tailwind
+- **Framework para Interface:** Tailwind e Flask
 - **Banco de Dados:** SQLite 
 
 ## ✨ Como Executar o Projeto
