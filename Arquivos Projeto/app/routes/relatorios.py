@@ -33,27 +33,34 @@ def listar_locacoes():
     """Lista todas as locações realizadas"""
     if current_user.is_admin:
         locacoes = Locacao.query.all()
-        relatorios = []
+        relatorios = {}
 
         for locacao in locacoes:
             cliente = Usuario.query.get(locacao.cliente_id)
             filmes = Filme.query.filter(Filme.id == locacao.filme_id).all()
 
-            relatorios.append({
-                "id": locacao.id,
-                "cliente_nome": cliente.nome,
-                "filmes": [filme.titulo for filme in filmes],
-                "valor_total": locacao.valor_total,
-                "forma_pagamento": locacao.forma_pagamento,
-                "data_retirada": locacao.data_locacao,
-                "data_devolucao": locacao.data_devolucao_prevista,
-                "finalizada": locacao.finalizada,  # Exibe o status finalizada
-            })
+            if locacao.id not in relatorios:
+                # Inicializa a locação com o primeiro filme
+                relatorios[locacao.id] = {
+                    "id": locacao.id,
+                    "cliente_nome": cliente.nome,
+                    "filmes": [filme.titulo for filme in filmes],
+                    "valor_total": locacao.valor_total,
+                    "forma_pagamento": locacao.forma_pagamento,
+                    "data_retirada": locacao.data_locacao,
+                    "data_devolucao": locacao.data_devolucao_prevista,
+                    "finalizada": locacao.finalizada,
+                }
+            else:
+                # Se a locação já estiver no dicionário, apenas adiciona o filme e soma o valor
+                relatorios[locacao.id]["filmes"].extend([filme.titulo for filme in filmes])
+                relatorios[locacao.id]["valor_total"] += locacao.valor_total  # Somando o valor total
 
-        return render_template("relatorios_locacoes.html", relatorios=relatorios)
+        # Convertendo o dicionário para lista
+        relatorios_list = list(relatorios.values())
+        return render_template("relatorios_locacoes.html", relatorios=relatorios_list)
     else:
         return "Você não tem permissão para acessar esta página.", 403
-
 
 @relatorios_bp.route("/relatorios/finalizar/<int:locacao_id>", methods=["POST"])
 @login_required

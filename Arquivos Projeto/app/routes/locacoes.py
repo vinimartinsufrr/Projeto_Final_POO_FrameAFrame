@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 
 locacoes_bp = Blueprint("locacoes", __name__)
 
-
 @locacoes_bp.route("/locacoes", methods=["GET", "POST"])
 @login_required
 def locar_filmes():
@@ -16,11 +15,15 @@ def locar_filmes():
         data_retirada = request.form["data_retirada"]
         dias_locacao = int(request.form["dias_locacao"])
 
+        # Verificando se todos os campos foram preenchidos
+        if not filmes_ids or not forma_pagamento or not data_retirada or not dias_locacao:
+            flash("Por favor, preencha todos os campos obrigatórios.", "danger")
+            return redirect(url_for("locacoes.locar_filmes"))
+
         data_retirada = datetime.strptime(data_retirada, "%Y-%m-%d").date()
 
         # Calculando a data de devolução
-        data_devolucao_prevista = calcular_data_devolucao(
-            data_retirada, dias_locacao)
+        data_devolucao_prevista = calcular_data_devolucao(data_retirada, dias_locacao)
 
         # Calculando o valor total
         valor_total = sum(
@@ -38,7 +41,7 @@ def locar_filmes():
                     preco_diario=filme.preco,
                     forma_pagamento=forma_pagamento,
                     valor_total=valor_total,
-                    finalizada=False,  # 🚀 Locação começa como pendente
+                    finalizada=False,  # Locação começa como pendente
                 )
                 db.session.add(nova_locacao)
                 filme.quantidade_disponivel -= 1  # Reduz o estoque
@@ -49,8 +52,8 @@ def locar_filmes():
         flash("Filmes alugados com sucesso!", "success")
         return redirect(url_for("locacoes.listar_locacoes"))
 
-    filmes = Filme.query.all()
-    return render_template("locacoes.html", filmes=filmes)
+    filmes_disponiveis = Filme.query.filter(Filme.quantidade_disponivel > 0).all()  # Filtrando apenas filmes disponíveis
+    return render_template("locacoes.html", filmes=filmes_disponiveis)
 
 
 @locacoes_bp.route("/locacoes")

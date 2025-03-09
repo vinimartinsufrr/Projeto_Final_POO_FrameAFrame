@@ -8,4 +8,7 @@ explorar_bp = Blueprint("explorar", __name__)
 @login_required
 def explorar_filmes():
     filmes = Filme.query.all()
-    return render_template("explorar.html", filmes=filmes)
+    filmes_disponiveis = [filme for filme in filmes if filme.quantidade_disponivel > 0]
+    filmes_indisponiveis = [filme for filme in filmes if filme.quantidade_disponivel == 0]
+
+    return render_template("explorar.html", filmes_disponiveis=filmes_disponiveis, filmes_indisponiveis=filmes_indisponiveis)

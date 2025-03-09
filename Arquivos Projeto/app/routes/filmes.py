@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
-from app.models import Filme
+from app.models import Filme, Avaliacao
 from flask_login import login_required
 
 filmes_bp = Blueprint("filmes", __name__)
@@ -36,3 +36,5 @@ def listar_filmes():
 
     filmes = Filme.query.all()
     return render_template("filmes_admin.html", filmes=filmes)
+
+
