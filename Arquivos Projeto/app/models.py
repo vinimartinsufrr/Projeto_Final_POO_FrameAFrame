@@ -1,5 +1,5 @@
-from app import db  # 🔹 Importamos `db` da app para evitar problemas de múltiplas instâncias
 from flask_login import UserMixin
+from app import db  # 🔹 Importamos `db` da app para evitar problemas de múltiplas instâncias
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 
@@ -91,3 +91,21 @@ class Locacao(db.Model):
         elif data_devolucao.weekday() == 6:
             data_devolucao += timedelta(days=1)
         return data_devolucao
+
+
+class Avaliacao(db.Model):
+    """Tabela de Avaliações de Filmes."""
+    id = db.Column(db.Integer, primary_key=True)
+    filme_id = db.Column(db.Integer, db.ForeignKey('filme.id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey(
+        'usuario.id'), nullable=False)
+    nota = db.Column(db.Float, nullable=False)
+    descricao = db.Column(db.Text, nullable=True)
+
+    filme = db.relationship(
+        'Filme', backref=db.backref('avaliacoes', lazy=True))
+    usuario = db.relationship(
+        'Usuario', backref=db.backref('avaliacoes', lazy=True))
+
+    def __repr__(self):
+        return f"<Avaliacao {self.nota} - {self.filme.titulo}>"

@@ -36,6 +36,7 @@ def create_app():
     from app.routes.relatorios_estoque import relatorios_estoque_bp
     from app.routes.meus_dados import meus_dados_bp
     from app.routes.minhas_locacoes import minhas_locacoes_bp
+    from app.routes.avaliacoes import avaliacoes_bp
 
     # 🔹 Registro de Blueprints
     app.register_blueprint(auth_bp)
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(relatorios_estoque_bp)
     app.register_blueprint(meus_dados_bp)
     app.register_blueprint(minhas_locacoes_bp)
+    app.register_blueprint(avaliacoes_bp)
 
     return app
 
