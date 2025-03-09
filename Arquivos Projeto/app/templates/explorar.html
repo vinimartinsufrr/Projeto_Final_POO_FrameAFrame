@@ -69,24 +69,72 @@
 
     <!-- 🔹 Área de Exibição dos Filmes -->
     <div class="flex-1 p-10">
-        <h1 class="text-3xl font-bold text-blue-500">Filmes Disponíveis</h1>
+        <!-- Barra de Pesquisa -->
+        <div class="mt-6 mb-4">
+            <input type="text" id="search" placeholder="Pesquise um filme..."
+                class="p-3 w-full border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-            {% for filme in filmes %}
-            <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
-                <img src="{{ filme.imagem_url }}" alt="{{ filme.titulo }}" class="w-full h-60 object-cover rounded-lg">
-                <h2 class="text-xl font-semibold text-white mt-2">{{ filme.titulo }} ({{ filme.ano }})</h2>
-                <p class="text-gray-300 text-sm mt-1">{{ filme.genero }} - Dirigido por {{ filme.diretor }}</p>
-                <p class="text-gray-400 mt-2">{{ filme.descricao }}</p>
-                <div class="mt-2 flex items-center justify-between">
-                    <!-- Preço diário de locação formatado -->
-                    <p class="text-green-400 font-bold">Preço/Dia: R$ {{ '%.2f' % filme.preco }}</p>
+        <!-- Filmes Disponíveis -->
+        <h1 class="text-3xl font-bold text-blue-500">Filmes Disponíveis</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6" id="filmes-lista">
+            {% for filme in filmes_disponiveis %}
+            <a href="{{ url_for('avaliacoes.detalhes_filme', filme_id=filme.id) }}" class="filme-item">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src="{{ filme.imagem_url }}" alt="{{ filme.titulo }}"
+                        class="w-full h-60 object-cover rounded-lg">
+                    <h2 class="text-xl font-semibold text-white mt-2">{{ filme.titulo }} ({{ filme.ano }})</h2>
+                    <p class="text-gray-300 text-sm mt-1">{{ filme.genero }} - Dirigido por {{ filme.diretor }}</p>
+                    <p class="text-gray-400 mt-2">{{ filme.descricao }}</p>
+                    <div class="mt-2 flex items-center justify-between">
+                        <p class="text-green-400 font-bold">Preço/Dia: R$ {{ '%.2f' % filme.preco }}</p>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2">ID do Filme: {{ filme.id }}</p>
                 </div>
-                <p class="text-gray-400 text-sm mt-2">ID do Filme: {{ filme.id }}</p>
-            </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Filmes Indisponíveis -->
+        <h1 class="text-3xl font-bold text-red-500 mt-8">Filmes Indisponíveis</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6" id="filmes-lista">
+            {% for filme in filmes_indisponiveis %}
+            <a href="{{ url_for('avaliacoes.detalhes_filme', filme_id=filme.id) }}" class="filme-item">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-lg">
+                    <img src="{{ filme.imagem_url }}" alt="{{ filme.titulo }}"
+                        class="w-full h-60 object-cover rounded-lg opacity-50">
+                    <h2 class="text-xl font-semibold text-white mt-2">{{ filme.titulo }} ({{ filme.ano }})</h2>
+                    <p class="text-gray-300 text-sm mt-1">{{ filme.genero }} - Dirigido por {{ filme.diretor }}</p>
+                    <p class="text-gray-400 mt-2">{{ filme.descricao }}</p>
+                    <div class="mt-2 flex items-center justify-between">
+                        <p class="text-red-400 font-bold">Indisponível</p>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2">ID do Filme: {{ filme.id }}</p>
+                </div>
+            </a>
             {% endfor %}
         </div>
     </div>
 
 </div>
+
+<script>
+    // Função para filtrar os filmes com base na pesquisa
+    document.getElementById('search').addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const filmes = document.querySelectorAll('.filme-item');
+
+        filmes.forEach(filme => {
+            const titulo = filme.querySelector('h2').textContent.toLowerCase();
+
+            // Se o título do filme contiver o texto da pesquisa, mostra o filme, se não, esconde
+            if (titulo.includes(query)) {
+                filme.style.display = 'block'; // Mostrar filme
+            } else {
+                filme.style.display = 'none'; // Esconder filme
+            }
+        });
+    });
+</script>
+
 {% endblock %}
