@@ -70,7 +70,7 @@ pip install -r requirements.txt
 python setup_admin.py
 python main.py
 ```
-
+O comando python setup_admin.py cria uma conta de administrador, que possui mais funções do que contas de usuario padrão. o login é admin@locadora.com e a senha é admin123
 ## ✨ Contribuição
 Se você deseja contribuir para este projeto, fique à vontade para enviar **pull requests** ou abrir **issues** relatando bugs ou sugerindo melhorias.
 
