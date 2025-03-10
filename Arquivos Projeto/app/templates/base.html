@@ -11,7 +11,7 @@
 <body class="bg-gray-900 text-white">
 
     {% if request.endpoint not in ['auth.login', 'auth.register'] %}
-    <!-- 🔹 Navbar simplificada apenas com o nome da empresa -->
+    
     <nav class="p-4 bg-gray-800 text-center">
         <a href="{{ url_for('home.index') }}" class="text-blue-400 text-2xl font-bold">
             Locadora FrameAFrame
