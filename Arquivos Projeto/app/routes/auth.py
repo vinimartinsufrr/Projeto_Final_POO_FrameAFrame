@@ -41,7 +41,7 @@ def register():
         cpf = request.form["cpf"]
         telefone = request.form["telefone"]
 
-        # 🔹 Validações no backend
+        #  Validações no backend
         if len(nome) < 4:
             flash("O nome deve ter pelo menos 4 caracteres.", "danger")
             return redirect(url_for("auth.register"))
@@ -73,13 +73,12 @@ def register():
             flash("CPF já cadastrado!", "danger")
             return redirect(url_for("auth.register"))
 
-        # 🔹 Criando o usuário e cliente
+        #  Criando o usuário e cliente
         novo_usuario = Usuario(nome=nome, email=email, is_admin=False)
         novo_usuario.set_password(senha)
         db.session.add(novo_usuario)
         db.session.commit()
 
-        # Criar entrada na tabela Cliente
         novo_cliente = Cliente(usuario_id=novo_usuario.id,
                                cpf=cpf, telefone=telefone)
         db.session.add(novo_cliente)

@@ -54,7 +54,7 @@ def listar_locacoes():
             else:
                 # Se a locação já estiver no dicionário, apenas adiciona o filme e soma o valor
                 relatorios[locacao.id]["filmes"].extend([filme.titulo for filme in filmes])
-                relatorios[locacao.id]["valor_total"] += locacao.valor_total  # Somando o valor total
+                relatorios[locacao.id]["valor_total"] += locacao.valor_total  
 
         # Convertendo o dicionário para lista
         relatorios_list = list(relatorios.values())
@@ -75,10 +75,10 @@ def finalizar_locacao(locacao_id):
     if locacao.finalizada:
         flash("Essa locação já foi finalizada.", "warning")
     else:
-        # Marca a locação como finalizada
+        
         locacao.finalizada = True
 
-        # Atualiza o estoque do filme alugado
+        
         filme = Filme.query.get(locacao.filme_id)
         if filme:
             filme.quantidade_disponivel += 1  # Incrementa o estoque

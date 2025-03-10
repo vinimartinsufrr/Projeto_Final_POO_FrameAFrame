@@ -46,7 +46,6 @@ def cadastrar_filmes():
         db.session.add(novo_filme)
         db.session.commit()
 
-        # Mensagem de sucesso
         flash("Filme cadastrado com sucesso!", category="filme_cadastro")
         return redirect(url_for("filmes.cadastrar_filmes"))
 

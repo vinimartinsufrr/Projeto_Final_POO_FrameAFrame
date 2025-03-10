@@ -7,4 +7,4 @@ home_bp = Blueprint("home", __name__)
 def index():
     if current_user.is_authenticated:
         return redirect(url_for("explorar.explorar_filmes"))  # Se logado, vai para explorar filmes
-    return redirect(url_for("auth.login"))  # Se não logado, vai direto para o login
+    return redirect(url_for("auth.login"))  
